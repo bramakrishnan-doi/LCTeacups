@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 import subprocess 
-import os
+
 
 def get_latest_reservoir_data():
     """
@@ -49,11 +49,12 @@ def get_latest_reservoir_data():
             all_timestamps.extend(timestamps)
 
         # Find the overall latest timestamp
-        overall_latest_timestamp = max(all_timestamps)
+        all_timestamps = [datetime.strptime(ts, "%m/%d/%Y %I:%M:%S %p").date() for ts in all_timestamps]
+        overall_latest_timestamp = max(all_timestamps).strftime("%m/%d/%Y")
 
         #Format the timestamp
-        latest_date_obj = datetime.strptime(overall_latest_timestamp, "%m/%d/%Y %I:%M:%S %p")
-        formatted_timestamp = latest_date_obj.strftime("%m/%d/%Y")
+        # latest_date_obj = datetime.strptime(overall_latest_timestamp, "%m/%d/%Y %I:%M:%S %p")
+        formatted_timestamp = overall_latest_timestamp
 
         #Create the dictionary containing the latest data.
         latest_data = {"timestamp": formatted_timestamp}
