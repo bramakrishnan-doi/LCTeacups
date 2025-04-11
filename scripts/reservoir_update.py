@@ -31,7 +31,7 @@ def get_latest_reservoir_data():
             sdi = series["SDI"]
             site_name = series["SiteName"]
             column_label = f"{sdi}-{site_name}"
-            timestamps = [item["t"] for item in series["Data"]]
+            timestamps = [datetime.strptime(item["t"], "%m/%d/%Y %I:%M:%S %p") for item in series["Data"]]
             values = [item["v"] for item in series["Data"]]
 
             data_dict[column_label] = {"timestamps": timestamps, "values": values}
@@ -42,15 +42,15 @@ def get_latest_reservoir_data():
             sdi = series["SDI"]
             site_name = series["SiteName"]
             column_label = f"{sdi}-{site_name}"
-            timestamps = [item["t"] for item in series["Data"]]
+            timestamps = [datetime.strptime(item["t"], "%m/%d/%Y %I:%M:%S %p") for item in series["Data"]]
             values = [item["v"] for item in series["Data"]]
 
             data_dict[column_label] = {"timestamps": timestamps, "values": values}
             all_timestamps.extend(timestamps)
 
         # Find the overall latest timestamp
-        all_timestamps = [datetime.strptime(ts, "%m/%d/%Y %I:%M:%S %p").date() for ts in all_timestamps]
-        overall_latest_timestamp = max(all_timestamps).strftime("%m/%d/%Y")
+        # all_timestamps = [datetime.strptime(ts, "%m/%d/%Y %I:%M:%S %p").date() for ts in all_timestamps]
+        overall_latest_timestamp = max(all_timestamps) #.strftime("%m/%d/%Y")
 
         #Format the timestamp
         # latest_date_obj = datetime.strptime(overall_latest_timestamp, "%m/%d/%Y %I:%M:%S %p")
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             lake_mohave_value = round(float(latest_reservoir_data.get("2086-Lake Mohave", 0)))
             lake_havasu_value = round(float(latest_reservoir_data.get("2087-Lake Havasu", 0)))
             
-            formatted_timestamp = latest_reservoir_data["timestamp"]
+            formatted_timestamp = latest_reservoir_data["timestamp"].strftime("%m/%d/%Y")
 
             res_attrib = [
                 {'label': 'Lake Powell', 'upper_left': (2320, 170), 'size': 7.0, 'max_fill': 23313800, 'current_fill': lake_powell_value, 'date': formatted_timestamp},
