@@ -26,7 +26,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y fonts-freefont-ttf
 
       - name: Run reservoir update script
-        run: python scripts/reservoir_update.py
+        run: python -W ignore scripts/reservoir_update.py
 
       - name: Commit and push changes
         run: |
